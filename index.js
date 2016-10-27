@@ -23,6 +23,7 @@ function containsPath(fp, segment) {
 
 function normalize(str) {
   str = path.normalize(str);
+  str = str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   return str.split(/[\\\/]+/);
 }
 
