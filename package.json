@@ -23,9 +23,12 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "normalize-path": "^2.1.1"
+  },
   "devDependencies": {
-    "mocha": "*"
+    "gulp-format-md": "^0.1.12",
+    "mocha": "^3.2.0"
   },
   "keywords": [
     "contains",
@@ -48,12 +51,21 @@
     "related": {
       "list": [
         "ends-with",
-        "is-absolute",
-        "is-relative",
-        "parse-filepath",
+        "normalize-path",
         "path-ends-with",
-        "path-segments"
+        "unixify"
       ]
+    },
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
     }
   }
 }
