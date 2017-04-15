@@ -4,6 +4,10 @@
   "version": "0.1.0",
   "homepage": "https://github.com/jonschlinkert/contains-path",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "contributors": [
+    "Gerard <germtf@gmail.com> (https://github.com/germtb)",
+    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)"
+  ],
   "repository": "jonschlinkert/contains-path",
   "bugs": {
     "url": "https://github.com/jonschlinkert/contains-path/issues"
@@ -44,11 +48,11 @@
     "related": {
       "list": [
         "ends-with",
-        "path-ends-with",
-        "path-segments",
         "is-absolute",
         "is-relative",
-        "parse-filepath"
+        "parse-filepath",
+        "path-ends-with",
+        "path-segments"
       ]
     }
   }
