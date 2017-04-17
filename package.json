@@ -24,7 +24,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "normalize-path": "^2.1.1"
+    "normalize-path": "^2.1.1",
+    "path-starts-with": "^1.0.0"
   },
   "devDependencies": {
     "gulp-format-md": "^0.1.12",

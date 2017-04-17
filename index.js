@@ -1,8 +1,9 @@
 'use strict';
 
+var startsWith = require('path-starts-with');
 var normalizePath = require('normalize-path');
 
-function containsPath(filepath, substr, allowPartialMatch) {
+function containsPath(filepath, substr, options) {
   if (typeof filepath !== 'string') {
     throw new TypeError('expected filepath to be a string');
   }
@@ -19,6 +20,16 @@ function containsPath(filepath, substr, allowPartialMatch) {
     return true;
   }
 
+  if (substr.charAt(0) === '!') {
+    return !containsPath(filepath, substr.slice(1), options);
+  }
+
+  options = options || {};
+  if (options.nocase === true) {
+    filepath = filepath.toLowerCase();
+    substr = substr.toLowerCase();
+  }
+
   var fp = normalize(filepath, false);
   var str = normalize(substr, false);
 
@@ -32,6 +43,10 @@ function containsPath(filepath, substr, allowPartialMatch) {
     return true;
   }
 
+  if (startsWith(filepath, substr, options)) {
+    return true;
+  }
+
   var idx = fp.indexOf(str);
   var prefix = substr.slice(0, 2);
 
@@ -42,7 +57,7 @@ function containsPath(filepath, substr, allowPartialMatch) {
   }
 
   if (idx !== -1) {
-    if (allowPartialMatch === true) {
+    if (options.partialMatch === true) {
       return true;
     }
 
@@ -53,9 +68,8 @@ function containsPath(filepath, substr, allowPartialMatch) {
       return true;
     }
 
-    // since partial matches were not enabled, we can
-    // only consider this a match if the next character
-    // is a dot or a slash
+    // since partial matches were not enabled, we only consider
+    // this a match if the next character is a dot or a slash
     var before = fp.charAt(idx - 1);
     var after = fp.charAt(idx + str.length);
     return (before === '' || before === '/')

@@ -28,83 +28,79 @@ describe('containsPath', function() {
   });
 
   it('should be false when the value is only slashes', function() {
+    assert(!containsPath('/foo', '/'));
+    assert(!containsPath('/foo', '//'));
+    assert(!containsPath('/foo', '///'));
+    assert(!containsPath('foo/', '/'));
+    assert(!containsPath('foo/', '//'));
+    assert(!containsPath('foo/', '///'));
     assert(!containsPath('/foo/', '/'));
     assert(!containsPath('/foo/', '//'));
     assert(!containsPath('/foo/', '///'));
-    assert(!containsPath('/foo/', '\\\\'));
-    assert(!containsPath('/foo/', '\\'));
   });
 
   it('should return true when a path contains another path', function() {
-    assert(containsPath('./a/b/c', 'a'));
-    assert(containsPath('./a/b/c', 'a/b'));
-    assert(containsPath('./b/a/b/c', '/a/b'));
-    assert(containsPath('./b/a/b/c', 'a/b'));
-    assert(containsPath('/a/b/c', '/a/b'));
-    assert(containsPath('/a/b/c', 'a/b'));
-    assert(containsPath('/b/a/b/c', '/a/b'));
-    assert(containsPath('a', 'a'));
-    assert(containsPath('a/b/c', 'a'));
-    assert(containsPath('aa/a.md', 'a.md'));
+    assert(!containsPath('./bar/foo/bar/baz', './foo'));
+    assert(!containsPath('./bar/foo/bar/baz', './foo/bar'));
+    assert(!containsPath('abc', 'foo.md'));
+    assert(containsPath('/foo/bar/baz', 'foo/bar'));
+    assert(containsPath('aa/foo.md', 'foo.md'));
+    assert(containsPath('foo', 'foo'));
+    assert(containsPath('foo/bar/baz', 'foo'));
   });
 
-  it('should match from bos when prefixed with "/"', function() {
-    assert(containsPath('/b/c/d', '/b'));
-    assert(!containsPath('b/c/d', '/b'));
-    assert(!containsPath('./b/c/d', '/b'));
+  it('should work with windows drive letters', function() {
+    assert(!containsPath('C:/foo/bar', 'C:/bar'));
+    assert(containsPath('C:/foo/bar', 'C:/foo'));
+    assert(containsPath('C:/foo/bar', 'foo/bar'));
+  });
 
-    assert(containsPath('\\b\\c\\d', '\\b'));
-    assert(!containsPath('b\\c\\d', '\\b'));
-    assert(!containsPath('.\\b\\c\\d', '\\b'));
+  it('should match any path part when prefixed with "/"', function() {
+    assert(!containsPath('./bar/baz/qux', '/bar'));
+    assert(!containsPath('bar/baz/qux', '/bar'));
+    assert(containsPath('./bar/foo/bar/baz', '/foo/bar'));
+    assert(containsPath('/bar/baz/qux', '/bar'));
+    assert(containsPath('/bar/foo/bar/baz', '/foo/bar'));
+    assert(containsPath('/foo/bar/baz', '/foo/bar'));
+    assert(containsPath('foo/bar/baz', '/baz'));
   });
 
   it('should match from bos when starts with "./"', function() {
-    assert(!containsPath('/b/a/b/c', './b'));
-    assert(containsPath('b/a/b/c', './b'));
-    assert(containsPath('./b/a/b/c', './b'));
+    assert(!containsPath('/bar/foo/bar/baz', './bar'));
+    assert(containsPath('./bar/foo/bar/baz', './bar'));
+    assert(containsPath('./bar/foo/bar/baz', 'foo/bar'));
+    assert(containsPath('./foo/bar/baz', 'foo'));
+    assert(containsPath('./foo/bar/baz', 'foo/bar'));
+    assert(containsPath('bar/foo/bar/baz', './bar'));
 
-    assert(!containsPath('\\b\\a\\b\\c', '.\\b'));
-    assert(containsPath('b\\a\\b\\c', '.\\b'));
-    assert(containsPath('.\\b\\a\\b\\c', '.\\b'));
-  });
-
-  it('should return false when a path does not contain another path', function() {
-    assert(!containsPath('abc', 'a.md'));
-    assert(!containsPath('./b/a/b/c', './a/b'));
-    assert(!containsPath('./b/a/b/c', './a'));
-
-    assert(!containsPath('.\\b\\a\\b\\c', '.\\a\\b'));
-    assert(!containsPath('.\\b\\a\\b\\c', '.\\a'));
-  });
-
-  it('should return false for partial matches', function() {
-    assert(!containsPath('abc', 'a'));
-    assert(!containsPath('aaa', 'a'));
-    assert(!containsPath('aaa.md', 'a.md'));
+    // windows paths
   });
 
   it('should be true when the path ends with a string', function() {
-    assert(containsPath('foo/bar/baz', '/baz'));
+    assert(!containsPath('foo/bar.md/baz', '.md'));
+    assert(containsPath('foo/.git/baz', '.git'));
     assert(containsPath('foo/bar/baz', 'bar/baz'));
     assert(containsPath('foo/bar/baz', 'baz'));
     assert(containsPath('foo/bar/baz.md', 'bar/baz.md'));
     assert(containsPath('foo/bar/baz.md', 'baz.md'));
+  });
 
-    assert(containsPath('foo\\bar\\baz.md', 'bar/baz.md'));
-    assert(containsPath('foo\\bar\\baz.md', 'bar\\baz.md'));
-    assert(containsPath('foo\\bar\\baz.md', 'baz.md'));
-    assert(!containsPath('foo\\bar\\baz.md', '.md'));
-    assert(!containsPath('foo\\bar\\baz.md', 'md'));
-    assert(!containsPath('foo\\bar\\baz.md', 'z.md'));
+  it('should return false for partial matches', function() {
+    assert(!containsPath('abc', 'foo'));
+    assert(!containsPath('aaa', 'foo'));
+    assert(!containsPath('aaa.md', 'foo.md'));
   });
 
   it('should be false when the path does not contain the string', function() {
-    assert(!containsPath('foo\\bar\\baz.md', 'baz'));
+    assert(!containsPath('foo/bar/baz.md', 'baz'));
   });
 
   it('should be false when the string is a "partial" match', function() {
-    assert(!containsPath('foo\\bar\\bazqux', 'qux'));
-    assert(!containsPath('foo\\bar\\baz.md', 'baz'));
-    assert(!containsPath('foo\\bar\\baz.md', 'baz/'));
+    assert(!containsPath('foo/bar/baz.md', '.md'));
+    assert(!containsPath('foo/bar/baz.md', 'baz'));
+    assert(!containsPath('foo/bar/baz.md', 'baz/'));
+    assert(!containsPath('foo/bar/baz.md', 'md'));
+    assert(!containsPath('foo/bar/baz.md', 'z.md'));
+    assert(!containsPath('foo/bar/bazqux', 'qux'));
   });
 });
