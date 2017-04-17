@@ -1,83 +1,130 @@
-# contains-path [![NPM version](https://badge.fury.io/js/contains-path.svg)](http://badge.fury.io/js/contains-path)
+# contains-path [![NPM version](https://img.shields.io/npm/v/contains-path.svg?style=flat)](https://www.npmjs.com/package/contains-path) [![NPM monthly downloads](https://img.shields.io/npm/dm/contains-path.svg?style=flat)](https://npmjs.org/package/contains-path) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/contains-path.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/contains-path)
 
 > Return true if a file path contains the given path.
 
 ## Install
 
-Install with [npm](https://www.npmjs.com/)
+Install with [npm](https://www.npmjs.com/):
 
 ```sh
-$ npm i contains-path --save
+$ npm install --save contains-path
+```
+
+Install with [yarn](https://yarnpkg.com):
+
+```sh
+$ yarn add contains-path
 ```
 
 ## Usage
 
 ```js
-var contains = require('contains-path');
+var containsPath = require('contains-path');
+
+containsPath('foo/bar', 'foo'); //=> true
+containsPath('foo/bar', 'bar'); //=> true
+containsPath('foo/bar', 'qux'); //=> false
+
+// returns false for partial matches
+containsPath('foobar', 'foo');  //=> false
+containsPath('foo.bar', 'foo'); //=> false
+containsPath('foo.bar', 'bar'); //=> false
+
+// prefix with "./" to match from beginning of filepath
+containsPath('bar/foo', 'foo');   //=> true
+containsPath('bar/foo', './foo'); //=> false
 ```
 
-**true**
+## Negation
 
-All of the following return `true`:
+Prefix with `!` to invert matching behavior:
 
 ```js
-containsPath('./a/b/c', 'a');
-containsPath('./a/b/c', 'a/b');
-containsPath('./b/a/b/c', 'a/b');
-containsPath('/a/b/c', '/a/b');
-containsPath('/a/b/c', 'a/b');
-containsPath('a', 'a');
-containsPath('a/b/c', 'a');
-//=> true
+containsPath('foo/bar', '!foo'); //=> false
+containsPath('foo/bar', '!qux'); //=> true
 ```
 
-**false**
+## Options
 
-All of the following return `false`:
+### options.nocase
+
+**Type**: `boolean`
+
+**Default**: `false`
+
+Disable case sensitivity.
 
 ```js
-containsPath('abc', 'a');
-containsPath('abc', 'a.md');
-containsPath('./b/a/b/c', './a/b');
-containsPath('./b/a/b/c', './a');
-containsPath('./b/a/b/c', '/a/b');
-containsPath('/b/a/b/c', '/a/b');
-//=> false
+containsPath('foo/bar', 'FOO');                 //=> false
+containsPath('foo/bar', 'FOO', {nocase: true}); //=> true
 ```
 
-## Related projects
+### options.partialMatch
 
-* [ends-with](https://github.com/jonschlinkert/ends-with): Returns `true` if the given `string` or `array` ends with `suffix` using strict equality for… [more](https://github.com/jonschlinkert/ends-with)
-* [is-absolute](https://github.com/jonschlinkert/is-absolute): Return true if a file path is absolute.
-* [is-relative](https://github.com/jonschlinkert/is-relative): Returns `true` if the path appears to be relative.
-* [path-ends-with](https://github.com/jonschlinkert/path-ends-with): Return `true` if a file path ends with the given string/suffix.
-* [path-segments](https://github.com/jonschlinkert/path-segments): Get n specific segments of a file path, e.g. first 2, last 3, etc.
-* [parse-filepath](https://github.com/jonschlinkert/parse-filepath): Parse a filepath into an object, yielding predictable results for basename and extname.
+**Type**: `boolean`
 
-## Running tests
+**Default**: `false`
 
-Install dev dependencies:
+Allow "partial" matches:
+
+```js
+containsPath('foobar', 'foo');                        //=> false                 
+containsPath('foobar', 'foo', {partialMatch: true});  //=> true 
+
+containsPath('foo.bar', 'foo');                       //=> false                 
+containsPath('foo.bar', 'foo', {partialMatch: true}); //=> true 
+```
+
+## About
+
+### Related projects
+
+* [ends-with](https://www.npmjs.com/package/ends-with): Returns `true` if the given `string` or `array` ends with `suffix` using strict equality for… [more](https://github.com/jonschlinkert/ends-with) | [homepage](https://github.com/jonschlinkert/ends-with "Returns `true` if the given `string` or `array` ends with `suffix` using strict equality for comparisons.")
+* [normalize-path](https://www.npmjs.com/package/normalize-path): Normalize file path slashes to be unix-like forward slashes. Also condenses repeat slashes to a… [more](https://github.com/jonschlinkert/normalize-path) | [homepage](https://github.com/jonschlinkert/normalize-path "Normalize file path slashes to be unix-like forward slashes. Also condenses repeat slashes to a single slash and removes and trailing slashes unless disabled.")
+* [path-ends-with](https://www.npmjs.com/package/path-ends-with): Return `true` if a file path ends with the given string/suffix. | [homepage](https://github.com/jonschlinkert/path-ends-with "Return `true` if a file path ends with the given string/suffix.")
+* [unixify](https://www.npmjs.com/package/unixify): Convert Windows file paths to unix paths. | [homepage](https://github.com/jonschlinkert/unixify "Convert Windows file paths to unix paths.")
+
+### Contributing
+
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
+
+### Contributors
+
+| **Commits** | **Contributor** | 
+| --- | --- |
+| 2 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 1 | [germtb](https://github.com/germtb) |
+
+### Building docs
+
+_(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
+
+To generate the readme, run the following command:
 
 ```sh
-$ npm i -d && npm test
+$ npm install -g verbose/verb#dev verb-generate-readme && verb
 ```
 
-## Contributing
+### Running tests
 
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/contains-path/issues/new)
+Running and reviewing unit tests is a great way to get familiarized with a library and its API. You can install dependencies and run tests with the following command:
 
-## Author
+```sh
+$ npm install && npm test
+```
+
+### Author
 
 **Jon Schlinkert**
 
-+ [github/jonschlinkert](https://github.com/jonschlinkert)
-+ [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
+* [github/jonschlinkert](https://github.com/jonschlinkert)
+* [twitter/jonschlinkert](https://twitter.com/jonschlinkert)
 
-## License
+### License
 
-Copyright © 2015 Jon Schlinkert
-Released under the MIT license.
+Copyright © 2017, [Jon Schlinkert](https://github.com/jonschlinkert).
+Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on July 07, 2015._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.5.0, on April 17, 2017._
