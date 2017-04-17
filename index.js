@@ -21,16 +21,22 @@ function containsPath(filepath, substr, allowPartialMatch) {
 
   var fp = normalize(filepath, false);
   var str = normalize(substr, false);
+
+  // return false if the normalized substring is only a slash
   if (str === '/') {
     return false;
   }
 
+  // if normalized strings are equal, return true
   if (fp === str) {
     return true;
   }
 
   var idx = fp.indexOf(str);
   var prefix = substr.slice(0, 2);
+
+  // if the original substring started with "./", we'll
+  // assume it should match from the beginning of the string
   if (prefix === './' || prefix === '.\\') {
     return idx === 0;
   }
@@ -60,7 +66,7 @@ function containsPath(filepath, substr, allowPartialMatch) {
 }
 
 /**
- * Normalize slashes
+ * Normalize paths
  */
 
 function normalize(str) {
