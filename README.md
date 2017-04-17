@@ -1,4 +1,4 @@
-# contains-path [![NPM version](https://img.shields.io/npm/v/contains-path.svg?style=flat)](https://www.npmjs.com/package/contains-path) [![NPM monthly downloads](https://img.shields.io/npm/dm/contains-path.svg?style=flat)](https://npmjs.org/package/contains-path) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/contains-path.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/contains-path)
+# contains-path [![NPM version](https://img.shields.io/npm/v/contains-path.svg?style=flat)](https://www.npmjs.com/package/contains-path) [![NPM monthly downloads](https://img.shields.io/npm/dm/contains-path.svg?style=flat)](https://npmjs.org/package/contains-path) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/contains-path.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/contains-path) [![Windows Build Status](https://img.shields.io/appveyor/ci/jonschlinkert/contains-path.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/jonschlinkert/contains-path)
 
 > Return true if a file path contains the given path.
 
@@ -15,6 +15,10 @@ Install with [yarn](https://yarnpkg.com):
 ```sh
 $ yarn add contains-path
 ```
+
+## HEADS UP!
+
+As of v1.0.0, this library no longer uses regex for matching. Please do not hesitate to [report any issues or regressiosn](../../issues/new).
 
 ## Usage
 
