@@ -153,6 +153,7 @@ describe('containsPath', function() {
     assert(!containsPath('foo/bar/baz.md', 'z.md'));
     assert(!containsPath('foo/bar/bazqux', 'qux'));
     assert(!containsPath('/foo-bar/baz.md', '/foo'));
+    assert(!containsPath('./foo-bar/baz.md', './foo'));
 
     // windows paths
     assert(!containsPath('foo\\bar\\baz.md', '.md'));
@@ -161,6 +162,7 @@ describe('containsPath', function() {
     assert(!containsPath('foo\\bar\\baz.md', 'md'));
     assert(!containsPath('foo\\bar\\baz.md', 'z.md'));
     assert(!containsPath('foo\\bar\\bazqux', 'qux'));
-    assert(!containsPath('/foo-bar\\baz.md', '/foo'));
+    assert(!containsPath('\\foo-bar\\baz.md', '/foo'));
+    assert(!containsPath('.\\foo-bar\\baz.md', './foo'));
   });
 });
